@@ -97,6 +97,7 @@ class MyHomePage extends StatelessWidget {
                                       width: 20,
                                       height: 20,
                                     ),
+
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: TextField(
