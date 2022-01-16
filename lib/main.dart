@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home:  MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -100,9 +100,9 @@ class MyHomePage extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: TextField(
-                                          controller: _controller,
+                                        controller: _controller,
                                         decoration:
-                                            InputDecoration(hintText: " "),
+                                            InputDecoration(hintText: "ENTER LENGTH"),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -139,10 +139,9 @@ class MyHomePage extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: TextField(
-                                        controller: _controller2
-                                        ,
+                                        controller: _controller2,
                                         decoration:
-                                            InputDecoration(hintText: " "),
+                                            InputDecoration(hintText: "ENTER GIRTH "),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -179,6 +178,55 @@ class MyHomePage extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
+                            var length = double.tryParse(_controller.text);
+                            var girth = double.tryParse(_controller2.text);
+                            if (length == null || girth == null) {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('ERROR'),
+                                    content: Text("Invalid input"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              var weight = weghtCal.calculateWeight(
+                                  length / 100, girth / 100);
+                              var btmWeight = weight - 3;
+                              var upperWeight = weight + 3;
+                              var btmPrice = (btmWeight * 112.50).round();
+                              var upperPrice = (upperWeight * 112.50).round();
+
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('RESULT'),
+                                    content: Text(
+                                        "Weight: $btmWeight - $upperWeight kg\nPrice: $btmPrice - $upperPrice Baht"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
                         ),
                       ],
@@ -193,6 +241,3 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
-
-
-
